@@ -1,0 +1,25 @@
+{
+	"name": "test-app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "electron .",
+		"build": "electron-builder build --win --publish never",
+		"deploy": "electron-builder build --win --publish always"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Looky1173/Electron.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^13.1.1",
+		"electron-builder": "^22.10.5"
+	},
+	"dependencies": {
+		"electron-updater": "^4.3.9"
+	}
+}
