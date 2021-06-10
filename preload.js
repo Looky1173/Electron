@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeNotification() {
         notification.classList.add('hidden');
-    }
+    }*/
     function restartApp() {
         window.ipcRenderer.send('restart_app');
-    }*/
+    }
     contextBridge.exposeInMainWorld('api', {
         restartApp: () => restartApp(),
         send: (channel, data) => {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Whitelist channels
             let validChannels = [
                 'check-for-updates',
-                'destroy-splash-screen'
+                'destroy-splash-screen',
             ];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

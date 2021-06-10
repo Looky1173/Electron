@@ -46,13 +46,13 @@
             window.api.send('check-for-updates');
             window.api.receive('update-not-available', function () {
                 loadingMessage.innerText = 'Launching...';
-                
+
             });
             window.api.receive('update-available', function () {
                 loadingMessage.innerText = 'Downloading update...';
             });
-            window.api.receive('download-progress', function (percent) {
-                loadingMessage.innerText = 'Downloading update... (' + percent + ')';
+            window.api.receive('download-progress', function (data) {
+                loadingMessage.innerText = 'Downloading update... (' + Math.round(data.percent) + '%)';
             });
             window.api.receive('update-downloaded', function () {
                 loadingMessage.innerText = 'Applying update...';
