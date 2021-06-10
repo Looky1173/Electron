@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const { contextBridge, ipcRenderer } = require("electron");
     window.ipcRenderer = ipcRenderer;
-
+/*
     const version = document.getElementById('version');
 
     window.ipcRenderer.send('app_version');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function restartApp() {
         window.ipcRenderer.send('restart_app');
-    }
+    }*/
     contextBridge.exposeInMainWorld('api', {
         restartApp: () => restartApp(),
         send: (channel, data) => {
