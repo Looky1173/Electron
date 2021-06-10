@@ -1,10 +1,6 @@
 {
 	"name": "electron-app",
-<<<<<<< HEAD
-	"version": "1.0.11",
-=======
-	"version": "1.0.11",
->>>>>>> 6f20e914241706c174429a82243d9d0adee30cb7
+	"version": "1.0.12",
 	"description": "",
 	"main": "main.js",
 	"scripts": {
