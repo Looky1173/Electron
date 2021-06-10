@@ -80,15 +80,6 @@
             window.api.receive('update-error', function () {
                 loadingMessage.innerText = 'ERROR!';
             });
-            /*
-            window.postMessage({ type: "CHECK_FOR_UPDATES" }, "*");
-            window.addEventListener("message", (event) => {
-                if (event.source != window) return
-                if (event.data.type && (event.data.type == "NO_UPDATES_AVAILABLE")) {
-                    window.postMessage({ type: "DESTROY_SPLASH_SCREEN" }, "*");
-                    //document.getElementsByTagName("p")[1].innerText = event.data.text
-                }
-            }, false)*/
         });
     </script>
 </body>

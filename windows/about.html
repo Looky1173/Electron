@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+</head>
+
+<body>
+    <h1>About</h1>
+    <p>To check for updates, please relaunch the application! Available updates will be automatically downloaded and installed.</p>
+    <hr>
+    <p>Version: <span id="version"></span></p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const version = document.getElementById('version');
+            window.api.send('get-version');
+            window.api.receive('version', function (data) {
+                version.innerText = data.version;
+            });
+        });
+    </script>
+</body>
+
+</html>

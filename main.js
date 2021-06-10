@@ -5,6 +5,7 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 let splash;
+let aboutWindow;
 
 function createMainWindow() {
 	mainWindow = new BrowserWindow({
@@ -34,6 +35,22 @@ function createWindow() {
 	if (isDev) {
 		splash.webContents.openDevTools();
 	}
+}
+
+function createAboutWindow(){
+	aboutWindow = new BrowserWindow({
+		width: 480,
+		height: 360,
+		webPreferences: {
+			preload: path.join(__dirname, 'preload.js')
+		},
+	});
+	aboutWindow.loadFile('windows/about.html');
+	aboutWindow.on('closed', function () {
+		aboutWindow = null;
+	});
+	aboutWindow.removeMenu();
+	//aboutWindow.openDevTools();
 }
 
 function openDevTools(window) {
@@ -72,7 +89,7 @@ const mainMenuTemplate = [
 				label: 'About',
 				accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
 				click() {
-					about();
+					createAboutWindow();
 				}
 			}
 		]
@@ -95,8 +112,8 @@ app.on('activate', function () {
 	}
 });
 
-ipcMain.on('app_version', (event) => {
-	event.sender.send('app_version', { version: app.getVersion() });
+ipcMain.on('get-version', (event) => {
+	event.sender.send('version', { version: app.getVersion() });
 });
 
 ipcMain.on('launch-app', () => {
@@ -130,14 +147,6 @@ ipcMain.on('check-for-updates', (event) => {
 		}, 5000);
 	}
 });
-
-/*
-autoUpdater.on('update-available', () => {
-	mainWindow.webContents.send('update_available');
-});
-autoUpdater.on('update-downloaded', () => {
-	mainWindow.webContents.send('update_downloaded');
-});*/
 
 ipcMain.on('restart_app', () => {
 	autoUpdater.quitAndInstall();

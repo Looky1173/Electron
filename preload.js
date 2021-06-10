@@ -9,25 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.ipcRenderer.removeAllListeners('app_version');
         version.innerText = 'Version ' + arg.version;
     });
-
-    const notification = document.getElementById('notification');
-    const message = document.getElementById('message');
-    const restartButton = document.getElementById('restart-button');
-    window.ipcRenderer.on('update_available', () => {
-        window.ipcRenderer.removeAllListeners('update_available');
-        message.innerText = 'A new update is available. Downloading now...';
-        notification.classList.remove('hidden');
-    });
-    window.ipcRenderer.on('update_downloaded', () => {
-        window.ipcRenderer.removeAllListeners('update_downloaded');
-        message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-        restartButton.classList.remove('hidden');
-        notification.classList.remove('hidden');
-    });
-
-    function closeNotification() {
-        notification.classList.add('hidden');
-    }*/
+*/
     function restartApp() {
         window.ipcRenderer.send('restart_app');
     }
@@ -39,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let validChannels = [
                 'check-for-updates',
                 'launch-app',
+                'get-version'
             ];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -51,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'update-not-available',
                 'download-progress',
                 'update-downloaded',
-                'update-error'
+                'update-error',
+                'version'
             ];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender`
