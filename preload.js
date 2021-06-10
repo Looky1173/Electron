@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Whitelist channels
             let validChannels = [
                 'check-for-updates',
-                'destroy-splash-screen',
+                'launch-app',
             ];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

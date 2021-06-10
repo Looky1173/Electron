@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starting App...</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
         html,
         body {
             width: 100%;
@@ -20,33 +22,50 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: 'Poppins', sans-serif;
         }
 
         #loading {
+            position: relative;
             width: 300px;
             height: 200px;
             margin: 20px;
             padding: 20px;
-            background-color: white;
+            background: rgb(33, 118, 255);
+            background: linear-gradient(45deg, rgba(33, 118, 255, 1) 0%, rgba(247, 152, 36, 1) 100%);
+            color: white;
             border-radius: 5px;
             -webkit-box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
             box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
+        }
+        #loading-title{
+            margin: 0;
+        }
+        #loading-message {
+            position: absolute;
+            font-size: 15px;
+            font-weight: 550;
+            left: 20px;
+            bottom: 10px;
         }
     </style>
 </head>
 
 <body>
     <div id="loading-wrapper">
-        <h1 id="loading"></h1>
+        <div id="loading">
+            <h1 id="loading-title">Electron Test App</h1>
+            <h2 id="loading-message"></h2>
+        </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const loadingMessage = document.getElementById('loading');
+            const loadingMessage = document.getElementById('loading-message');
             loadingMessage.innerText = 'Checking for updates...';
             window.api.send('check-for-updates');
             window.api.receive('update-not-available', function () {
                 loadingMessage.innerText = 'Launching...';
-
+                window.api.send('launch-app');
             });
             window.api.receive('update-available', function () {
                 loadingMessage.innerText = 'Downloading update...';

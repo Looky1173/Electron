@@ -6,12 +6,7 @@ const isDev = require('electron-is-dev');
 let mainWindow;
 let splash;
 
-function createWindow() {
-	// Create splash screen
-	splash = new BrowserWindow({ width: 480, height: 360, transparent: true, frame: false, alwaysOnTop: true, webPreferences: { preload: path.join(__dirname, 'preload.js') } });
-	splash.loadFile('splash.html');
-	splash.webContents.openDevTools();
-
+function createMainWindow() {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -25,11 +20,20 @@ function createWindow() {
 		mainWindow = null;
 	});
 	mainWindow.once('ready-to-show', () => {
-		//splash.destroy();
+		splash.destroy();
 		mainWindow.show();
 	});
 	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 	Menu.setApplicationMenu(mainMenu);
+}
+
+function createWindow() {
+	// Create splash screen
+	splash = new BrowserWindow({ width: 480, height: 360, transparent: true, frame: false, alwaysOnTop: true, webPreferences: { preload: path.join(__dirname, 'preload.js') } });
+	splash.loadFile('splash.html');
+	if (isDev) {
+		splash.webContents.openDevTools();
+	}
 }
 
 function openDevTools(window) {
@@ -95,6 +99,10 @@ ipcMain.on('app_version', (event) => {
 	event.sender.send('app_version', { version: app.getVersion() });
 });
 
+ipcMain.on('launch-app', () => {
+	createMainWindow();
+});
+
 ipcMain.on('check-for-updates', (event) => {
 	if (!isDev) {
 		autoUpdater.checkForUpdates();
@@ -105,7 +113,7 @@ ipcMain.on('check-for-updates', (event) => {
 			event.sender.send('update-not-available');
 		});
 		autoUpdater.on('download-progress', (data) => {
-			event.sender.send('download-progress', {'percent': data.percent});
+			event.sender.send('download-progress', { 'percent': data.percent });
 		});
 		autoUpdater.on('update-downloaded', () => {
 			event.sender.send('update-downloaded');
@@ -116,7 +124,10 @@ ipcMain.on('check-for-updates', (event) => {
 			console.log(error);
 		});
 	} else {
-		event.sender.send('update-not-available');
+		// During development, do not check for updates
+		setTimeout(function () {
+			event.sender.send('update-not-available');
+		}, 5000);
 	}
 });
 
