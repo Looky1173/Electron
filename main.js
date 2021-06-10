@@ -25,7 +25,7 @@ function createWindow() {
 		mainWindow = null;
 	});
 	mainWindow.once('ready-to-show', () => {
-		splash.destroy();
+		//splash.destroy();
 		mainWindow.show();
 	});
 	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -110,8 +110,10 @@ ipcMain.on('check-for-updates', (event) => {
 		autoUpdater.on('update-downloaded', () => {
 			event.sender.send('update-downloaded');
 		});
-		autoUpdater.on('error', () => {
+		autoUpdater.on('error', (error) => {
 			event.sender.send('update-error');
+			alert(error);
+			console.log(error);
 		});
 	} else {
 		event.sender.send('update-not-available');
