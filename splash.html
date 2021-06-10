@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starting App...</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        #loading-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading {
+            width: 300px;
+            height: 200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
+            box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading-wrapper">
+        <h1 id="loading"></h1>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loadingMessage = document.getElementById('loading');
+            loadingMessage.innerText = 'Checking for updates...';
+            window.api.send('check-for-updates');
+            window.api.receive('update-not-available', function () {
+                loadingMessage.innerText = 'Launching...';
+                
+            });
+            window.api.receive('update-available', function () {
+                loadingMessage.innerText = 'Downloading update...';
+            });
+            window.api.receive('download-progress', function (percent) {
+                loadingMessage.innerText = 'Downloading update... (' + percent + ')';
+            });
+            window.api.receive('update-downloaded', function () {
+                loadingMessage.innerText = 'Applying update...';
+                window.api.restartApp();
+            });
+            window.api.receive('update-error', function () {
+                loadingMessage.innerText = 'ERROR!';
+            });
+            /*
+            window.postMessage({ type: "CHECK_FOR_UPDATES" }, "*");
+            window.addEventListener("message", (event) => {
+                if (event.source != window) return
+                if (event.data.type && (event.data.type == "NO_UPDATES_AVAILABLE")) {
+                    window.postMessage({ type: "DESTROY_SPLASH_SCREEN" }, "*");
+                    //document.getElementsByTagName("p")[1].innerText = event.data.text
+                }
+            }, false)*/
+        });
+    </script>
+</body>
+
+</html>

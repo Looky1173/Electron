@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const { ipcRenderer } = require("electron");
+document.addEventListener('DOMContentLoaded', function () {
+    const { contextBridge, ipcRenderer } = require("electron");
     window.ipcRenderer = ipcRenderer;
 
     const version = document.getElementById('version');
@@ -31,4 +31,32 @@ document.addEventListener("DOMContentLoaded", function () {
     function restartApp() {
         window.ipcRenderer.send('restart_app');
     }
+    contextBridge.exposeInMainWorld('api', {
+        restartApp: () => restartApp(),
+        send: (channel, data) => {
+            console.log("Send on channel " + channel)
+            // Whitelist channels
+            let validChannels = [
+                'check-for-updates',
+                'destroy-splash-screen'
+            ];
+            if (validChannels.includes(channel)) {
+                ipcRenderer.send(channel, data);
+            }
+        },
+        receive: (channel, func) => {
+            console.log("Receive on channel " + channel)
+            let validChannels = [
+                'update-available',
+                'update-not-available',
+                'download-progress',
+                'update-downloaded',
+                'update-error'
+            ];
+            if (validChannels.includes(channel)) {
+                // Deliberately strip event as it includes `sender`
+                ipcRenderer.on(channel, (event, ...args) => func(...args));
+            }
+        }
+    });
 });
