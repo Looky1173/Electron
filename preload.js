@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const { contextBridge, ipcRenderer } = require("electron");
-    window.ipcRenderer = ipcRenderer;
+    const { contextBridge, ipcRenderer, shell } = require("electron");
+    //window.ipcRenderer = ipcRenderer;
 /*
     const version = document.getElementById('version');
 
@@ -11,10 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 */
     function restartApp() {
-        window.ipcRenderer.send('restart_app');
+        window.ipcRenderer.send('restart-app');
     }
     contextBridge.exposeInMainWorld('api', {
         restartApp: () => restartApp(),
+        shell: {
+            openExternal: (address) => shell.openExternal(address)
+        },
         send: (channel, data) => {
             console.log("Send on channel " + channel)
             // Whitelist channels

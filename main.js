@@ -50,7 +50,7 @@ function createAboutWindow(){
 		aboutWindow = null;
 	});
 	aboutWindow.removeMenu();
-	//aboutWindow.openDevTools();
+	aboutWindow.openDevTools();
 }
 
 function openDevTools(window) {
@@ -148,6 +148,6 @@ ipcMain.on('check-for-updates', (event) => {
 	}
 });
 
-ipcMain.on('restart_app', () => {
+ipcMain.on('restart-app', () => {
 	autoUpdater.quitAndInstall();
 });
