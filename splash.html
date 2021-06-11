@@ -75,7 +75,7 @@
             window.api.receive('download-progress', function (data) {
                 loadingMessage.innerText = 'Downloading update... (' + Math.round(data.percent) + '%)';
             });
-            window.api.receive('update-downloaded', function () {
+            window.api.receive('update-downloaded', () => {
                 loadingMessage.innerText = 'Applying update...';
                 window.api.restartApp();
             });

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 */
     function restartApp() {
-        window.ipcRenderer.send('restart-app');
+        ipcRenderer.send('restart-app');
     }
     contextBridge.exposeInMainWorld('api', {
         restartApp: () => restartApp(),
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ipcRenderer.send(channel, data);
             }
         },
-        receive: (channel, func) => {
+        receive: (channel, callback) => {
             console.log("Receive on channel " + channel)
             let validChannels = [
                 'update-available',
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender`
-                ipcRenderer.on(channel, (event, ...args) => func(...args));
+                ipcRenderer.on(channel, (event, ...args) => callback(...args));
             }
         }
     });

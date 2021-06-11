@@ -165,8 +165,6 @@ ipcMain.on('check-for-updates', (event) => {
 		});
 		autoUpdater.on('error', (error) => {
 			event.sender.send('update-error');
-			alert(error);
-			console.log(error);
 		});
 	} else {
 		// During development, do not check for updates
