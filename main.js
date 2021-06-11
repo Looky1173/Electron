@@ -50,7 +50,9 @@ function createAboutWindow(){
 		aboutWindow = null;
 	});
 	aboutWindow.removeMenu();
-	aboutWindow.openDevTools();
+	if(isDev){
+		aboutWindow.openDevTools();
+	}
 }
 
 function openDevTools(window) {
