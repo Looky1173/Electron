@@ -38,9 +38,11 @@
             -webkit-box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
             box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .4) !important;
         }
-        #loading-title{
+
+        #loading-title {
             margin: 0;
         }
+
         #loading-message {
             position: absolute;
             font-size: 15px;
@@ -79,6 +81,10 @@
             });
             window.api.receive('update-error', function () {
                 loadingMessage.innerText = 'An error has occured! Please check your internet connection. The app will launch in a few seconds...';
+                setTimeout(function () {
+                    loadingMessage.innerText = 'Launching...';
+                    window.api.send('launch-app');
+                }, 5000);
             });
         });
     </script>
