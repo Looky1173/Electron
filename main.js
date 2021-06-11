@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require("path");
 const isDev = require('electron-is-dev');
@@ -37,7 +37,7 @@ function createWindow() {
 	}
 }
 
-function createAboutWindow(){
+function createAboutWindow() {
 	aboutWindow = new BrowserWindow({
 		width: 480,
 		height: 360,
@@ -50,7 +50,7 @@ function createAboutWindow(){
 		aboutWindow = null;
 	});
 	aboutWindow.removeMenu();
-	if(isDev){
+	if (isDev) {
 		aboutWindow.openDevTools();
 	}
 }
@@ -59,10 +59,36 @@ function openDevTools(window) {
 	window.webContents.openDevTools();
 }
 
+function relaunch() {
+	// Configure the conformation dialog, storing the parameters in `options`
+	const options = {
+		type: 'question',
+		buttons: ['Yes, relaunch', 'No, cancel'],
+		defaultId: 1,
+		title: 'Relaunch Confirmation',
+		message: 'Are you sure you would like to relaunch the application?',
+		detail: 'All processes will be immediately terminated.'
+	};
+
+	// Show the confirmation dialog and handle the response
+	dialog.showMessageBox(null, options).then(response => {
+		if (response.response === 0) {
+			app.relaunch();
+			app.exit();
+		}
+	})
+}
+
 const mainMenuTemplate = [
 	{
 		label: 'File',
 		submenu: [
+			{
+				label: 'Relaunch',
+				click() {
+					relaunch();
+				}
+			},
 			{
 				label: 'Quit',
 				accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
