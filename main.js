@@ -7,8 +7,13 @@ let mainWindow;
 let splash;
 let aboutWindow;
 
+const iconPath = process.platform !== 'darwin'
+    ? 'assets/icon.ico'
+    : 'assets/icon.icns';
+
 function createMainWindow() {
 	mainWindow = new BrowserWindow({
+		icon: path.join(__dirname, iconPath),
 		width: 800,
 		height: 600,
 		show: false,
@@ -30,7 +35,7 @@ function createMainWindow() {
 
 function createWindow() {
 	// Create splash screen
-	splash = new BrowserWindow({ width: 480, height: 360, transparent: true, frame: false, alwaysOnTop: true, webPreferences: { preload: path.join(__dirname, 'preload.js') } });
+	splash = new BrowserWindow({ icon: path.join(__dirname, iconPath), width: 480, height: 360, transparent: true, frame: false, alwaysOnTop: true, webPreferences: { preload: path.join(__dirname, 'preload.js') } });
 	splash.loadFile('splash.html');
 	if (isDev) {
 		splash.webContents.openDevTools();
@@ -39,6 +44,7 @@ function createWindow() {
 
 function createAboutWindow() {
 	aboutWindow = new BrowserWindow({
+		icon: path.join(__dirname, iconPath),
 		width: 480,
 		height: 360,
 		webPreferences: {
