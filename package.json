@@ -1,6 +1,6 @@
 {
 	"name": "electron-app",
-	"version": "1.0.21",
+	"version": "1.0.22",
 	"description": "",
 	"main": "main.js",
 	"scripts": {
@@ -8,11 +8,6 @@
 		"start": "electron .",
 		"build": "electron-builder build --win --publish never",
 		"deploy": "electron-builder build --win --publish always"
-	},
-	"build": {
-		"win": {
-			"icon": "assets/icon.ico"
-		}
 	},
 	"repository": {
 		"type": "git",
